@@ -28,8 +28,8 @@ staging_events_table_create = ("""CREATE TABLE IF NOT EXISTS staging_events\
                                     length numeric,\
                                     level varchar,\
                                     location varchar,\
-                                    method numeric,\
-                                    page int,\
+                                    method varchar,\
+                                    page varchar,\
                                     registration varchar,\
                                     sessionId int,\
                                     song varchar,\
@@ -42,15 +42,15 @@ staging_events_table_create = ("""CREATE TABLE IF NOT EXISTS staging_events\
 
 staging_songs_table_create= ("""CREATE TABLE IF NOT EXISTS staging_songs\
                                 (\
-                                    num_songs int,\
                                     artist_id varchar,\
                                     artist_latitude numeric,\
-                                    artist_longitude numeric,\
                                     artist_location varchar,\
+                                    artist_longitude numeric,\
                                     artist_name varchar,\
+                                    duration numeric,\
+                                    num_songs varchar,\
                                     song_id varchar,\
                                     title varchar,\
-                                    duration numeric,\
                                     year int\
                                 );\
                             """)
@@ -113,11 +113,17 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time\
 
 # STAGING TABLES
 
-staging_events_copy = ("""
-""").format()
+staging_events_copy = ("""COPY staging_events \
+                          FROM {} \
+                          CREDENTIALS 'aws_iam_role={}' \
+                          FORMAT AS JSON {} \
+                       """).format(config.get('S3','LOG_DATA'),config.get('IAM_ROLE','ARN'),config.get('S3','LOG_JSONPATH'))
 
-staging_songs_copy = ("""
-""").format()
+staging_songs_copy = ("""COPY staging_songs \
+                         FROM {} \
+                         CREDENTIALS 'aws_iam_role={}' \
+                         FORMAT AS JSON 'auto' \
+                      """).format(config.get('S3','SONG_DATA'),config.get('IAM_ROLE','ARN'))
 
 # FINAL TABLES
 
