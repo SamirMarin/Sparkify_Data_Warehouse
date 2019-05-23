@@ -76,6 +76,8 @@ Alternatively you can use this bash script to run both create_tables.py and etl.
 ```
 ./run_data_pipeline.sh
 ```
+This script should aleady be excutable but if it is not simply make excutable with `chmod +x run_data_pipeline.sh`
+
 
 once you have ran etl.py to run again you need to run create_tables.py first. Else you will be attempting to insert data already inserted in the tables. Using the bash script will take care of this.
 
