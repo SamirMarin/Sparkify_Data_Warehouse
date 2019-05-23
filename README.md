@@ -21,3 +21,23 @@ contains all data from the Logdata dataset, table contains all columns found in 
 
 ### staging_songs staging table
 contains all data from the Song dataset, table contains all columns found in dataset
+
+## Star Schema Analytical Tables
+
+### Fact table
+**songplays** - created using staging_events and staging_songs data
+> songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
+
+### Dimension tables
+
+1. **users** - created using staging_events data
+> user_id, first_name, last_name, gender, level
+
+2. **songs** - created using staging_songs data
+> song_id, title, artist_id, year, duration
+
+3. **artists** - created using staging_songs data
+> artist_id, name, location, lattitude, longitude
+
+4. **time** - crated using staging_events data
+> start_time, hour, day, week, month, year, weekday
