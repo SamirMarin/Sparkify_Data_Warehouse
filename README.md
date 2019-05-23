@@ -45,7 +45,7 @@ contains all data from the Song dataset, table contains all columns found in dat
 ## The ETL Pipeline
 The etl pipeline consit of two python scripts: **create_tables.py** and **etl.py**.
 
-Both tables depend on the dwh.cfg file. This file contains information related to the AWS. Specifically three pieces of information: **cluster**, **role**, and **s3**
+Both tables depend on the **dwh.cfg** file. This file contains information related to the AWS. Specifically three pieces of information: **cluster**, **role**, and **s3**
 
 1. **Cluster** - This is the AWS redshift cluster information. This is blank by default as it must be filled out of by the person running the etl pipeline. This is related to the AWS redshift cluster that will be used to host the tables. To obtain this information you must create a redshift database on AWS.
 
@@ -55,4 +55,27 @@ Both tables depend on the dwh.cfg file. This file contains information related t
 
 One more thing that is needed in order to be able to access your redshift cluster from your machine is an AWS Security Group. This must also be used when creating your redshift cluster. Using the default security group will not allow you to access the redshift cluster with your machine.
 
+### create_tables.py
+This script drops (if tables exist) and creates the staging tables and the star schema tables.
+
+To run the script you will need to have the **dwh.cfg** cluster and role sections filled out. With your own AWS cluster and IAM role. Then simply run with:
+```
+python3 create_tables.py
+```
+
+### etl.py
+This script copies json data found in s3 bucket in redshift staging tables. Then inserts the data from the redshift staging tables in the star scheme tables.
+
+To run the script you will need to have the **dwh.cfg** cluster and role sections filled out. With your own AWS cluster and IAM role. Then simply run with:
+```
+python3 etl.py
+```
+
+### run_data_pipeline.sh
+Alternatively you can use this bash script to run both create_tables.py and etl.py at once. Simply run with:
+```
+./run_data_pipeline.sh
+```
+
+once you have ran etl.py to run again you need to run create_tables.py first. Else you will be attempting to insert data already inserted in the tables. Using the bash script will take care of this.
 
