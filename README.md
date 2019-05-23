@@ -41,3 +41,18 @@ contains all data from the Song dataset, table contains all columns found in dat
 
 4. **time** - crated using staging_events data
 > start_time, hour, day, week, month, year, weekday
+
+## The ETL Pipeline
+The etl pipeline consit of two python scripts: **create_tables.py** and **etl.py**.
+
+Both tables depend on the dwh.cfg file. This file contains information related to the AWS. Specifically three pieces of information: **cluster**, **role**, and **s3**
+
+1. **Cluster** - This is the AWS redshift cluster information. This is blank by default as it must be filled out of by the person running the etl pipeline. This is related to the AWS redshift cluster that will be used to host the tables. To obtain this information you must create a redshift database on AWS.
+
+2. **Role** - This is the AWS IAM Role. This is blank by default as it must be filled out of by the person running the etl pipeline. This is needed to enable your Redshift cluster to load data from Amazon S3 buckets. Your Redshift cluster must be crated with this role. Thus the Role must be created before the cluster.
+
+3. **S3** - This is the location of the data in the S3 buckets. This is filled and can be left as is.
+
+One more thing that is needed in order to be able to access your redshift cluster from your machine is an AWS Security Group. This must also be used when creating your redshift cluster. Using the default security group will not allow you to access the redshift cluster with your machine.
+
+
